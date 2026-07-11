@@ -102,6 +102,58 @@
   .nav-cta:active { transform: translateY(0); }
   @media (max-width: 640px) { .nav-links, .nav-cta { display: none; } }
 
+  /* ---------- MOBILE NAV TOGGLE + DRAWER ---------- */
+  .nav-actions { display: flex; align-items: center; gap: 8px; }
+  .nav-toggle {
+    display: none; width: 36px; height: 36px; border-radius: 8px;
+    border: 1px solid var(--border); background: transparent; color: var(--ink);
+    align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+  }
+  .nav-toggle svg { width: 18px; height: 18px; }
+  @media (max-width: 640px) { .nav-toggle { display: inline-flex; } }
+
+  .nav-drawer-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+    opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 90; backdrop-filter: blur(2px);
+  }
+  .nav-drawer-overlay.open { opacity: 1; visibility: visible; }
+
+  .nav-drawer {
+    position: fixed; top: 0; right: 0; height: 100%;
+    width: min(72vw, 280px);
+    background: var(--bg-raised); border-left: 1px solid var(--border);
+    box-shadow: -20px 0 50px rgba(0,0,0,0.35);
+    transform: translateX(100%); transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    z-index: 91; display: flex; flex-direction: column;
+  }
+  .nav-drawer.open { transform: translateX(0); }
+
+  .nav-drawer-head { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); position: relative; }
+  .nav-drawer-title { font-family: var(--mono); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .nav-drawer-sub { font-size: 13px; color: var(--ink-faint); }
+  .nav-drawer-close {
+    position: absolute; top: 20px; right: 20px; width: 30px; height: 30px;
+    border: none; background: transparent; color: var(--ink-soft);
+    display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 6px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .nav-drawer-close:hover { background: var(--accent-soft); color: var(--accent-bright); }
+  .nav-drawer-close svg { width: 18px; height: 18px; }
+
+  .nav-drawer-links { display: flex; flex-direction: column; padding: 10px 12px; gap: 2px; overflow-y: auto; }
+  .nav-drawer-links a {
+    font-family: var(--mono); font-size: 15px; font-weight: 600;
+    color: var(--ink-soft); padding: 13px 14px; border-radius: 10px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .nav-drawer-links a:hover { background: var(--accent-soft); color: var(--ink); }
+  .nav-drawer-links a.active { background: var(--accent); color: #fff; }
+
+  .nav-drawer-foot { margin-top: auto; padding: 18px 24px 26px; border-top: 1px solid var(--border); }
+  .nav-drawer-foot .nav-cta { display: block; text-align: center; }
+  @media (min-width: 641px) { .nav-drawer, .nav-drawer-overlay { display: none; } }
+
   /* ---------- HERO ---------- */
   .hero { padding: 90px 0 80px; position: relative; overflow: hidden; }
   .hero-noise {
@@ -334,6 +386,9 @@
     color: var(--accent-bright); border-color: var(--accent);
     background: var(--accent-soft);
     box-shadow: 0 0 12px var(--accent-glow);
+  }
+  .contact-links a svg {
+    width: 15px; height: 15px; flex-shrink: 0;
   }
 
   footer {
@@ -608,12 +663,38 @@
       <a href="#contact">contact</a>
     </div>
     <a href="#contact" class="nav-cta">get in touch</a>
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark and light mode">
-      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    </button>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark and light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
   </div>
 </nav>
+
+<div class="nav-drawer-overlay" id="navOverlay"></div>
+<div class="nav-drawer" id="navDrawer" role="dialog" aria-modal="true" aria-label="Site navigation">
+  <div class="nav-drawer-head">
+    <div class="nav-drawer-title">Nasimul Islam Nasim</div>
+    <div class="nav-drawer-sub">Navigate between sections.</div>
+    <button class="nav-drawer-close" id="navClose" type="button" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="nav-drawer-links">
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">home</a>
+    <a href="#about">about</a>
+    <a href="#projects">projects</a>
+    <a href="#education">education</a>
+    <a href="#contact">contact</a>
+  </div>
+  <div class="nav-drawer-foot">
+    <a href="#contact" class="nav-cta">get in touch</a>
+  </div>
+</div>
 
 <section class="hero">
   <div class="hero-noise"></div>
@@ -656,9 +737,9 @@
         <div class="skill-group">
           <div class="skill-group-label">Currently learning</div>
           <div class="skill-pills">
-            <span class="skill-pill"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 2l1.9 21.3L12 24l8.6-2.4L22.5 2H1.5zm16.9 5.4H7.6l.2 2.6h10.4l-.7 8.2-5.5 1.5-5.5-1.5-.4-4.2h2.6l.2 2.1 3.1.8 3.1-.8.3-3.4H6.3l-.6-7.4h12.9l-.2 2.1z"/></svg> HTML</span>
-            <span class="skill-pill"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 2l1.9 21.3L12 24l8.6-2.4L22.5 2H1.5zm16.4 12.9l-.4 4.2-5.5 1.5-5.5-1.5-.4-4.4h2.6l.2 2.3 3.1.8 3.1-.8.3-3.2H6.4l-.7-7.6h13l-.2 2.1H8.1l.2 3.4h9.4l-.1 1.2z"/></svg> CSS</span>
-            <span class="skill-pill"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0zm22.03 17.85c-.17-1.07-.86-1.97-2.9-2.8-.71-.34-1.5-.58-1.73-1.14-.09-.34-.1-.53-.05-.74.14-.6.85-.78 1.4-.61.36.11.7.39.9.83.96-.62.96-.62 1.63-1.04-.25-.38-.38-.55-.55-.72-.58-.65-1.37-.98-2.63-.96l-.66.08c-.63.16-1.24.5-1.6.95-1.07 1.21-.76 3.33.53 4.2 1.27 1.001 3.13 1.23 3.37 2.17.23 1.15-.85 1.52-1.92 1.39-.79-.16-1.23-.55-1.71-1.27l-1.78 1.03c.2.46.42.66.77 1.06 1.65 1.67 5.79 1.58 6.54-.94.03-.09.23-.68.07-1.59zm-8.32-6.79H11.6c0 1.85-.01 3.7-.01 5.55 0 1.18.06 2.26-.13 2.6-.31.72-1.12.62-1.48.5-.37-.19-.56-.45-.78-.83-.06-.11-.1-.19-.11-.19l-1.72 1.06c.28.58.7 1.08 1.22 1.4.79.48 1.86.63 2.98.37.73-.22 1.35-.66 1.68-1.34.47-.85.37-1.87.36-3.01.03-1.86.01-3.71.01-5.61z"/></svg> JavaScript</span>
+            <span class="skill-pill"><svg viewBox="0 0 24 24"><path fill="#e44d26" d="M1.5 2L3.4 21.3 12 24 20.6 21.3 22.5 2z"/><path fill="#f16529" d="M12 3.3v19.1l6.9-1.9 1.6-17.2z"/><text x="12" y="16.8" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="11" text-anchor="middle" fill="#fff">5</text></svg> HTML</span>
+            <span class="skill-pill"><svg viewBox="0 0 24 24"><path fill="#1572b6" d="M1.5 2L3.4 21.3 12 24 20.6 21.3 22.5 2z"/><path fill="#33a9dc" d="M12 3.3v19.1l6.9-1.9 1.6-17.2z"/><text x="12" y="16.8" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="11" text-anchor="middle" fill="#fff">3</text></svg> CSS</span>
+            <span class="skill-pill"><svg viewBox="0 0 24 24"><rect x="1" y="1" width="22" height="22" rx="3.2" fill="#f0db4f"/><text x="12" y="16.5" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="10.5" text-anchor="middle" fill="#111">JS</text></svg> JavaScript</span>
           </div>
         </div>
         <div class="skill-group">
@@ -779,17 +860,17 @@
     </div>
     <div class="socials-label reveal">find me everywhere</div>
     <div class="contact-links reveal">
-      <a href="https://github.com/nixnasim" target="_blank" rel="noopener">⌥ GitHub</a>
-      <a href="https://linkedin.com/in/nasimul-islam-nasim" target="_blank" rel="noopener">in LinkedIn</a>
-      <a href="https://instagram.com/nix_nasim" target="_blank" rel="noopener">◎ Instagram</a>
-      <a href="https://x.com/nix_nasim" target="_blank" rel="noopener">X Twitter</a>
-      <a href="https://www.facebook.com/nixnasim" target="_blank" rel="noopener">ƒ Facebook</a>
-      <a href="https://tiktok.com/@ni_nasim6" target="_blank" rel="noopener">♪ TikTok</a>
-      <a href="https://www.youtube.com/@nasimplaysyt" target="_blank" rel="noopener">▶ YouTube</a>
-      <a href="https://www.facebook.com/nasimplaysyt" target="_blank" rel="noopener">ƒ Facebook Page</a>
-      <a href="https://discord.gg/9VswC6zPU7" target="_blank" rel="noopener">◉ Discord</a>
-      <a href="https://steamcommunity.com/profiles/76561199801302870/" target="_blank" rel="noopener">⊕ Steam</a>
-      <a href="https://open.spotify.com/user/31kf2bbj62ltxbnljugumoibrilm" target="_blank" rel="noopener">♫ Spotify</a>
+      <a href="https://github.com/nixnasim" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.66.5 12.03c0 5.1 3.29 9.42 7.86 10.95.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.72 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.77.12 3.06.74.81 1.18 1.84 1.18 3.1 0 4.45-2.7 5.42-5.27 5.71.42.36.78 1.07.78 2.16 0 1.56-.02 2.82-.02 3.2 0 .31.21.66.79.55A10.53 10.53 0 0 0 23.5 12c0-6.37-5.15-11.53-11.5-11.53z"/></svg>GitHub</a>
+      <a href="https://linkedin.com/in/nasimul-islam-nasim" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.15 1.45-2.15 2.95v5.66H9.35V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>LinkedIn</a>
+      <a href="https://instagram.com/nix_nasim" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>Instagram</a>
+      <a href="https://x.com/nix_nasim" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3H22l-7.6 8.68L23 21h-6.8l-5.3-6.2L4.8 21H1.7l8.1-9.26L1 3h6.9l4.8 5.66L18.9 3zm-1.2 16h1.9L7.4 5H5.4l12.3 14z"/></svg>Twitter / X</a>
+      <a href="https://www.facebook.com/nixnasim" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94z"/></svg>Facebook</a>
+      <a href="https://tiktok.com/@ni_nasim6" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 2h-3.2v13.4a3.1 3.1 0 1 1-2.2-2.97v-3.3a6.4 6.4 0 1 0 5.4 6.32V8.9a7.6 7.6 0 0 0 4.4 1.4V7.1a4.3 4.3 0 0 1-4.4-4.28V2z"/></svg>TikTok</a>
+      <a href="https://www.youtube.com/@nasimplaysyt" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.6-.46-5.3A2.9 2.9 0 0 0 20.5 4.7C18.8 4.2 12 4.2 12 4.2s-6.8 0-8.5.5A2.9 2.9 0 0 0 1.46 6.7C1 8.4 1 12 1 12s0 3.6.46 5.3a2.9 2.9 0 0 0 2.04 2.02c1.7.48 8.5.48 8.5.48s6.8 0 8.5-.48a2.9 2.9 0 0 0 2.04-2.02C23 15.6 23 12 23 12zM9.8 15.4V8.6L15.8 12l-6 3.4z"/></svg>YouTube</a>
+      <a href="https://www.facebook.com/nasimplaysyt" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94z"/></svg>Facebook Page</a>
+      <a href="https://discord.gg/9VswC6zPU7" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 5.4A17.5 17.5 0 0 0 15.9 4c-.2.4-.44.9-.6 1.3a16.3 16.3 0 0 0-4.9 0A9 9 0 0 0 9.8 4a17.5 17.5 0 0 0-4.4 1.4C2.5 9.3 1.8 13 2.1 16.7a17.7 17.7 0 0 0 5.4 2.7c.44-.6.83-1.24 1.16-1.92-.64-.24-1.24-.53-1.82-.88.15-.11.3-.23.45-.35a12.6 12.6 0 0 0 10.6 0c.15.12.3.24.45.35-.58.35-1.19.64-1.83.88.34.68.72 1.32 1.16 1.92a17.6 17.6 0 0 0 5.4-2.7c.36-4.3-.6-7.95-2.75-11.3zM9.7 14.4c-.8 0-1.44-.75-1.44-1.66 0-.92.63-1.67 1.44-1.67.82 0 1.46.76 1.44 1.67 0 .91-.62 1.66-1.44 1.66zm5.1 0c-.8 0-1.44-.75-1.44-1.66 0-.92.63-1.67 1.44-1.67.82 0 1.46.76 1.44 1.67 0 .91-.62 1.66-1.44 1.66z"/></svg>Discord</a>
+      <a href="https://steamcommunity.com/profiles/76561199801302870/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-9.95 9.08l5.44 2.25a2.9 2.9 0 0 1 1.64-.5l2.42-3.5v-.05a3.66 3.66 0 1 1 3.66 3.66h-.09l-3.44 2.46a2.9 2.9 0 0 1-5.71.72l-3.9-1.62A10 10 0 1 0 12 2zm-2.6 15.6-1.25-.52a2.2 2.2 0 0 0 4.06.16 2.2 2.2 0 0 0-1.18-2.88 2.2 2.2 0 0 0-1.63-.02l1.29.53a1.6 1.6 0 1 1-1.29 2.73zm7.02-7.9a2.44 2.44 0 1 0-.01 4.88 2.44 2.44 0 0 0 .01-4.88zm0 4.06a1.62 1.62 0 1 1 0-3.24 1.62 1.62 0 0 1 0 3.24z"/></svg>Steam</a>
+      <a href="https://open.spotify.com/user/31kf2bbj62ltxbnljugumoibrilm" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.59 14.4a.62.62 0 0 1-.86.2c-2.36-1.44-5.33-1.77-8.83-.97a.62.62 0 1 1-.28-1.21c3.83-.87 7.12-.5 9.77 1.11.3.18.4.57.2.87zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.7-1.66-6.82-2.14-10.02-1.17a.78.78 0 1 1-.45-1.49c3.65-1.1 8.19-.57 11.28 1.33.37.23.49.72.26 1.07zm.11-2.83c-3.24-1.92-8.6-2.1-11.7-1.16a.93.93 0 1 1-.54-1.79c3.56-1.08 9.47-.87 13.2 1.34a.94.94 0 0 1-.96 1.61z"/></svg>Spotify</a>
     </div>
   </div>
 </section>
@@ -836,17 +917,41 @@
 
   // Active nav link on scroll
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
+  const navLinks = document.querySelectorAll('.nav-links a, .nav-drawer-links a');
   const observer2 = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         navLinks.forEach(a => a.classList.remove('active'));
-        const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
-        if (active) active.classList.add('active');
+        document.querySelectorAll(`a[href="#${e.target.id}"]`).forEach(a => {
+          if (a.closest('.nav-links, .nav-drawer-links')) a.classList.add('active');
+        });
       }
     });
   }, { threshold: 0.4 });
   sections.forEach(s => observer2.observe(s));
+
+  // Mobile nav drawer
+  const navToggle = document.getElementById('navToggle');
+  const navDrawer = document.getElementById('navDrawer');
+  const navOverlay = document.getElementById('navOverlay');
+  const navClose = document.getElementById('navClose');
+  function openDrawer() {
+    navDrawer.classList.add('open');
+    navOverlay.classList.add('open');
+    navToggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    navDrawer.classList.remove('open');
+    navOverlay.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+  if (navToggle) navToggle.addEventListener('click', openDrawer);
+  if (navClose) navClose.addEventListener('click', closeDrawer);
+  if (navOverlay) navOverlay.addEventListener('click', closeDrawer);
+  document.querySelectorAll('.nav-drawer-links a, .nav-drawer-foot a').forEach(a => a.addEventListener('click', closeDrawer));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
 
   // Floating particles in hero
   const container = document.getElementById('particles');
