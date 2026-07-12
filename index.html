@@ -1025,7 +1025,9 @@
       status.textContent = '';
       status.className = 'form-status';
 
-      fetch(form.action, {
+      const ajaxAction = form.action.replace('formsubmit.co/', 'formsubmit.co/ajax/');
+
+      fetch(ajaxAction, {
         method: 'POST',
         body: new FormData(form),
         headers: { 'Accept': 'application/json' }
